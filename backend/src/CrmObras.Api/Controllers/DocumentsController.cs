@@ -10,13 +10,21 @@ namespace CrmObras.Api.Controllers;
 [Route("api/v{version:apiVersion}/documents")]
 public class DocumentsController(UploadDocumentCommandHandler uploadDocumentCommandHandler) : ControllerBase
 {
+    public sealed record UploadDocumentRequest(Guid WorkProjectId, Guid CategoryId, IFormFile File);
+
     [HttpPost("upload")]
+    [Consumes("multipart/form-data")]
     [RequestSizeLimit(20_000_000)]
-    public async Task<Guid> Upload([FromForm] Guid workProjectId, [FromForm] Guid categoryId, [FromForm] IFormFile file, CancellationToken cancellationToken)
+    public async Task<Guid> Upload([FromForm] UploadDocumentRequest request, CancellationToken cancellationToken)
     {
-        await using var stream = file.OpenReadStream();
+        await using var stream = request.File.OpenReadStream();
         return await uploadDocumentCommandHandler.HandleAsync(
-            new UploadDocumentCommand(workProjectId, categoryId, file.FileName, file.ContentType, stream),
+            new UploadDocumentCommand(
+                request.WorkProjectId,
+                request.CategoryId,
+                request.File.FileName,
+                request.File.ContentType,
+                stream),
             cancellationToken);
     }
 }
