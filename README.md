@@ -19,12 +19,22 @@ cp .env.example .env
 cd backend
 # restaurar pacotes
  dotnet restore CrmObras.sln
-# aplicar migrations (após criar migration inicial)
- dotnet ef database update -p src/CrmObras.Infrastructure -s src/CrmObras.Api
+# restaurar ferramentas locais (.NET EF CLI)
+ dotnet tool restore
+# aplicar migrations
+ dotnet tool run dotnet-ef database update -p src/CrmObras.Infrastructure -s src/CrmObras.Api
 # executar API
  dotnet run --project src/CrmObras.Api
 ```
 API disponível em `https://localhost:5001` (Swagger habilitado em dev).
+
+### Observação sobre migrations
+Se aparecer o erro `dotnet-ef não existe`, rode `dotnet tool restore` dentro de `backend/` e use `dotnet tool run dotnet-ef ...`.
+
+Se preferir a instalação global, use:
+```bash
+dotnet tool install --global dotnet-ef
+```
 
 ## Frontend
 ### Pré-requisitos
