@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using CrmObras.Api.Extensions;
 using CrmObras.Application.DependencyInjection;
 using CrmObras.Infrastructure.DependencyInjection;
 using CrmObras.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,12 +25,9 @@ builder.Services.AddVersionedApiExplorer(options =>
 builder.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseGlobalExceptionHandling();
 app.UseHttpsRedirection();
 app.UseAuthentication();
