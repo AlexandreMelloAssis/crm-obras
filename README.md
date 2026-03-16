@@ -1,6 +1,8 @@
 # CrmObras - Sistema de Gestão de Obras
 
+
 Monorepo com backend .NET 10 (Clean Architecture em monólito modular) e frontend Next.js + TypeScript.
+
 
 ## Estrutura
 - `backend/` API REST e camadas Domain/Application/Infrastructure/API
