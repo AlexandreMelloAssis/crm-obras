@@ -1,6 +1,8 @@
 # CrmObras - Sistema de Gestão de Obras
 
-Monorepo com backend .NET 9 (Clean Architecture em monólito modular) e frontend Next.js + TypeScript.
+
+Monorepo com backend .NET 10 (Clean Architecture em monólito modular) e frontend Next.js + TypeScript.
+
 
 ## Estrutura
 - `backend/` API REST e camadas Domain/Application/Infrastructure/API
@@ -10,7 +12,7 @@ Monorepo com backend .NET 9 (Clean Architecture em monólito modular) e frontend
 
 ## Backend
 ### Pré-requisitos
-- .NET SDK 9
+- .NET SDK 10
 - PostgreSQL (ou `docker compose up -d`)
 
 ### Rodando localmente
