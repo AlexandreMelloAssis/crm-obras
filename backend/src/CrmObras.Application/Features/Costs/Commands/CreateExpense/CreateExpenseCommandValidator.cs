@@ -4,7 +4,7 @@ public static class CreateExpenseCommandValidator
 {
     public static void Validate(CreateExpenseCommand command)
     {
-        if (command.WorkProjectId == Guid.Empty)
+        if (command.WorkId == Guid.Empty)
             throw new InvalidOperationException("Todo custo deve ser vinculado a uma obra.");
 
         if (command.Amount <= 0)
@@ -14,3 +14,4 @@ public static class CreateExpenseCommandValidator
             throw new InvalidOperationException("Descrição do custo é obrigatória.");
     }
 }
+

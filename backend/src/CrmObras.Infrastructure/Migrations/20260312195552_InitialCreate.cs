@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -16,7 +16,7 @@ namespace CrmObras.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    WorkProjectId = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkId = table.Column<Guid>(type: "uuid", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     TotalEstimated = table.Column<decimal>(type: "numeric", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -34,7 +34,7 @@ namespace CrmObras.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    WorkProjectId = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkId = table.Column<Guid>(type: "uuid", nullable: false),
                     ContractNumber = table.Column<string>(type: "text", nullable: false),
                     ApprovedAmount = table.Column<decimal>(type: "numeric", nullable: false),
                     Installments = table.Column<int>(type: "integer", nullable: false),
@@ -149,7 +149,7 @@ namespace CrmObras.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    WorkProjectId = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkId = table.Column<Guid>(type: "uuid", nullable: false),
                     DocumentCategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     FileName = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     ContentType = table.Column<string>(type: "text", nullable: false),
@@ -171,7 +171,7 @@ namespace CrmObras.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_documents_work_projects_WorkProjectId",
-                        column: x => x.WorkProjectId,
+                        column: x => x.WorkId,
                         principalTable: "work_projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -182,7 +182,7 @@ namespace CrmObras.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    WorkProjectId = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkId = table.Column<Guid>(type: "uuid", nullable: false),
                     CostType = table.Column<int>(type: "integer", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
@@ -197,7 +197,7 @@ namespace CrmObras.Infrastructure.Migrations
                     table.PrimaryKey("PK_Expenses", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Expenses_work_projects_WorkProjectId",
-                        column: x => x.WorkProjectId,
+                        column: x => x.WorkId,
                         principalTable: "work_projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -208,7 +208,7 @@ namespace CrmObras.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    WorkProjectId = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
@@ -222,7 +222,7 @@ namespace CrmObras.Infrastructure.Migrations
                     table.PrimaryKey("PK_WorkStages", x => x.Id);
                     table.ForeignKey(
                         name: "FK_WorkStages_work_projects_WorkProjectId",
-                        column: x => x.WorkProjectId,
+                        column: x => x.WorkId,
                         principalTable: "work_projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -236,12 +236,12 @@ namespace CrmObras.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_documents_WorkProjectId",
                 table: "documents",
-                column: "WorkProjectId");
+                column: "WorkId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Expenses_WorkProjectId",
                 table: "Expenses",
-                column: "WorkProjectId");
+                column: "WorkId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
@@ -251,7 +251,7 @@ namespace CrmObras.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_WorkStages_WorkProjectId",
                 table: "WorkStages",
-                column: "WorkProjectId");
+                column: "WorkId");
         }
 
         /// <inheritdoc />
@@ -289,3 +289,4 @@ namespace CrmObras.Infrastructure.Migrations
         }
     }
 }
+

@@ -12,7 +12,7 @@ public class CreateExpenseCommandHandler(IApplicationDbContext dbContext)
 
         var expense = new Expense
         {
-            WorkProjectId = command.WorkProjectId,
+            WorkId = command.WorkId,
             CostType = (CostType)command.CostType,
             Amount = command.Amount,
             Description = command.Description
@@ -23,3 +23,4 @@ public class CreateExpenseCommandHandler(IApplicationDbContext dbContext)
         return expense.Id;
     }
 }
+

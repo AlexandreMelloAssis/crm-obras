@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CrmObras.Application.DTOs;
-using CrmObras.Application.Features.ProjectStages;
+using CrmObras.Application.Features.Workstages;
 
 namespace CrmObras.Api.Controllers;
 

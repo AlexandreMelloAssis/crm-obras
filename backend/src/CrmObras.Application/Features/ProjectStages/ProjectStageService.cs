@@ -2,7 +2,7 @@ using CrmObras.Application.Abstractions.Persistence;
 using CrmObras.Application.DTOs;
 using CrmObras.Domain.Entities;
 
-namespace CrmObras.Application.Features.ProjectStages;
+namespace CrmObras.Application.Features.Workstages;
 
 public class ProjectStageService(IApplicationDbContext dbContext)
 {
@@ -10,7 +10,7 @@ public class ProjectStageService(IApplicationDbContext dbContext)
     {
         var stage = new WorkStage
         {
-            WorkProjectId = request.WorkProjectId,
+            WorkId = request.WorkId,
             Name = request.Name,
             Description = request.Description
         };
@@ -20,3 +20,4 @@ public class ProjectStageService(IApplicationDbContext dbContext)
         return stage.Id;
     }
 }
+

@@ -1,0 +1,1 @@
+ALTER TABLE "work_projects" ALTER COLUMN "Responsible" DROP NOT NULL;

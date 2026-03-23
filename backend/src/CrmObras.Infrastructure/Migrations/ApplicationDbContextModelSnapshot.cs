@@ -17,7 +17,7 @@ namespace CrmObras.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "10.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -46,7 +46,7 @@ namespace CrmObras.Infrastructure.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("WorkProjectId")
+                    b.Property<Guid>("WorkId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -82,7 +82,7 @@ namespace CrmObras.Infrastructure.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("WorkProjectId")
+                    b.Property<Guid>("WorkId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -128,14 +128,14 @@ namespace CrmObras.Infrastructure.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("WorkProjectId")
+                    b.Property<Guid>("WorkId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DocumentCategoryId");
 
-                    b.HasIndex("WorkProjectId");
+                    b.HasIndex("WorkId");
 
                     b.ToTable("documents", (string)null);
                 });
@@ -201,12 +201,12 @@ namespace CrmObras.Infrastructure.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("WorkProjectId")
+                    b.Property<Guid>("WorkId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("WorkProjectId");
+                    b.HasIndex("WorkId");
 
                     b.ToTable("Expenses");
                 });
@@ -245,11 +245,118 @@ namespace CrmObras.Infrastructure.Migrations
                     b.ToTable("Materials");
                 });
 
+            modelBuilder.Entity("CrmObras.Domain.Entities.Permission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<string>("SystemName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SystemName")
+                        .IsUnique();
+
+                    b.ToTable("permissions", (string)null);
+                });
+
             modelBuilder.Entity("CrmObras.Domain.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsSystemDefault")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("CrmObras.Domain.Entities.RolePermission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("RoleId", "PermissionId")
+                        .IsUnique();
+
+                    b.ToTable("role_permissions", (string)null);
+                });
+
+            modelBuilder.Entity("CrmObras.Domain.Entities.Supplier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Contact")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -269,7 +376,7 @@ namespace CrmObras.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("CrmObras.Domain.Entities.User", b =>
@@ -292,15 +399,12 @@ namespace CrmObras.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("Profile")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -310,12 +414,10 @@ namespace CrmObras.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
-
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CrmObras.Domain.Entities.WorkProject", b =>
+            modelBuilder.Entity("CrmObras.Domain.Entities.Work", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -326,21 +428,25 @@ namespace CrmObras.Infrastructure.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
 
+                    b.Property<decimal>("Budget")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("character varying(150)");
 
-                    b.Property<string>("Responsible")
-                        .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("character varying(120)");
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -384,14 +490,53 @@ namespace CrmObras.Infrastructure.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("WorkProjectId")
+                    b.Property<Guid>("WorkId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("WorkProjectId");
+                    b.HasIndex("WorkId");
 
                     b.ToTable("WorkStages");
+                });
+
+            modelBuilder.Entity("CrmObras.Domain.Entities.WorkUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("WorkId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WorkId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("work_users", (string)null);
                 });
 
             modelBuilder.Entity("CrmObras.Domain.Entities.Document", b =>
@@ -402,58 +547,107 @@ namespace CrmObras.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CrmObras.Domain.Entities.WorkProject", "WorkProject")
+                    b.HasOne("CrmObras.Domain.Entities.Work", "Work")
                         .WithMany()
-                        .HasForeignKey("WorkProjectId")
+                        .HasForeignKey("WorkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("DocumentCategory");
 
-                    b.Navigation("WorkProject");
+                    b.Navigation("Work");
                 });
 
             modelBuilder.Entity("CrmObras.Domain.Entities.Expense", b =>
                 {
-                    b.HasOne("CrmObras.Domain.Entities.WorkProject", "WorkProject")
+                    b.HasOne("CrmObras.Domain.Entities.Work", "Work")
                         .WithMany()
-                        .HasForeignKey("WorkProjectId")
+                        .HasForeignKey("WorkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("WorkProject");
+                    b.Navigation("Work");
                 });
 
-            modelBuilder.Entity("CrmObras.Domain.Entities.User", b =>
+            modelBuilder.Entity("CrmObras.Domain.Entities.RolePermission", b =>
                 {
+                    b.HasOne("CrmObras.Domain.Entities.Permission", "Permission")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CrmObras.Domain.Entities.Role", "Role")
-                        .WithMany("Users")
+                        .WithMany("RolePermissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Permission");
 
                     b.Navigation("Role");
                 });
 
             modelBuilder.Entity("CrmObras.Domain.Entities.WorkStage", b =>
                 {
-                    b.HasOne("CrmObras.Domain.Entities.WorkProject", "WorkProject")
+                    b.HasOne("CrmObras.Domain.Entities.Work", "Work")
                         .WithMany("Stages")
-                        .HasForeignKey("WorkProjectId")
+                        .HasForeignKey("WorkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("WorkProject");
+                    b.Navigation("Work");
+                });
+
+            modelBuilder.Entity("CrmObras.Domain.Entities.WorkUser", b =>
+                {
+                    b.HasOne("CrmObras.Domain.Entities.Role", "Role")
+                        .WithMany("WorkUsers")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CrmObras.Domain.Entities.User", "User")
+                        .WithMany("WorkUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CrmObras.Domain.Entities.Work", "Work")
+                        .WithMany("WorkUsers")
+                        .HasForeignKey("WorkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+
+                    b.Navigation("Work");
+                });
+
+            modelBuilder.Entity("CrmObras.Domain.Entities.Permission", b =>
+                {
+                    b.Navigation("RolePermissions");
                 });
 
             modelBuilder.Entity("CrmObras.Domain.Entities.Role", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("RolePermissions");
+
+                    b.Navigation("WorkUsers");
                 });
 
-            modelBuilder.Entity("CrmObras.Domain.Entities.WorkProject", b =>
+            modelBuilder.Entity("CrmObras.Domain.Entities.User", b =>
+                {
+                    b.Navigation("WorkUsers");
+                });
+
+            modelBuilder.Entity("CrmObras.Domain.Entities.Work", b =>
                 {
                     b.Navigation("Stages");
+
+                    b.Navigation("WorkUsers");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,7 +8,10 @@ public class TestApplicationDbContext(DbContextOptions<TestApplicationDbContext>
 {
     public DbSet<User> Users => Set<User>();
     public DbSet<Role> Roles => Set<Role>();
-    public DbSet<WorkProject> WorkProjects => Set<WorkProject>();
+    public DbSet<Work> Works => Set<Work>();
+    public DbSet<WorkUser> WorkUsers => Set<WorkUser>();
+    public DbSet<Permission> Permissions => Set<Permission>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
     public DbSet<WorkStage> WorkStages => Set<WorkStage>();
     public DbSet<Material> Materials => Set<Material>();
     public DbSet<Expense> Expenses => Set<Expense>();
@@ -16,4 +19,5 @@ public class TestApplicationDbContext(DbContextOptions<TestApplicationDbContext>
     public DbSet<DocumentCategory> DocumentCategories => Set<DocumentCategory>();
     public DbSet<Budget> Budgets => Set<Budget>();
     public DbSet<CaixaFinancing> CaixaFinancings => Set<CaixaFinancing>();
+    public DbSet<Supplier> Suppliers => Set<Supplier>();
 }

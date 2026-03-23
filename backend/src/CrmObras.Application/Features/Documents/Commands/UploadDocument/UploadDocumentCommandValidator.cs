@@ -4,7 +4,7 @@ public static class UploadDocumentCommandValidator
 {
     public static void Validate(UploadDocumentCommand command)
     {
-        if (command.WorkProjectId == Guid.Empty)
+        if (command.WorkId == Guid.Empty)
             throw new InvalidOperationException("Documento deve estar vinculado a uma obra.");
 
         if (command.CategoryId == Guid.Empty)
@@ -14,3 +14,4 @@ public static class UploadDocumentCommandValidator
             throw new InvalidOperationException("Nome do arquivo é obrigatório.");
     }
 }
+

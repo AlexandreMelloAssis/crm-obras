@@ -19,7 +19,6 @@ public class AuthServiceTests
 
         result.Token.Should().Be("token-admin@crm.com");
         db.Users.Should().ContainSingle(u => u.Email == "admin@crm.com");
-        db.Roles.Should().ContainSingle(r => r.Name == "Admin");
     }
 
     [Fact]

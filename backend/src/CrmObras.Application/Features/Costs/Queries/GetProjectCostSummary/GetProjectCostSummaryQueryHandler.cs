@@ -11,11 +11,12 @@ public class GetProjectCostSummaryQueryHandler(IApplicationDbContext dbContext)
         GetProjectCostSummaryQueryValidator.Validate(query);
 
         var grouped = await dbContext.Expenses
-            .Where(x => x.WorkProjectId == query.WorkProjectId)
+            .Where(x => x.WorkId == query.WorkId)
             .GroupBy(x => x.CostType)
             .Select(g => new { Type = g.Key.ToString(), Total = g.Sum(x => x.Amount) })
             .ToListAsync(cancellationToken);
 
-        return new CostSummaryDto(query.WorkProjectId, grouped.Sum(x => x.Total), grouped.ToDictionary(x => x.Type, x => x.Total));
+        return new CostSummaryDto(query.WorkId, grouped.Sum(x => x.Total), grouped.ToDictionary(x => x.Type, x => x.Total));
     }
 }
+

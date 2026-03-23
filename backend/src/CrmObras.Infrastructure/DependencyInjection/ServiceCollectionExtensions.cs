@@ -5,9 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using CrmObras.Application.Abstractions.Auth;
+using CrmObras.Application.Abstractions.Documents;
 using CrmObras.Application.Abstractions.Persistence;
 using CrmObras.Application.Abstractions.Storage;
 using CrmObras.Infrastructure.Auth;
+using CrmObras.Infrastructure.Documents;
 using CrmObras.Infrastructure.Persistence;
 using CrmObras.Infrastructure.Storage;
 
@@ -24,6 +26,16 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
         services.AddScoped<IFileStorageService, LocalFileStorageService>();
+        services.Configure<DocumentIntelligenceOptions>(configuration.GetSection(DocumentIntelligenceOptions.SectionName));
+        services.Configure<TesseractOcrOptions>(configuration.GetSection(TesseractOcrOptions.SectionName));
+        services.AddHttpClient<HttpDocumentTextExtractionService>((provider, client) =>
+        {
+            var options = provider.GetRequiredService<Microsoft.Extensions.Options.IOptions<DocumentIntelligenceOptions>>().Value;
+            client.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds > 0 ? options.TimeoutSeconds : 60);
+        });
+        services.AddScoped<TesseractTextExtractionService>();
+        services.AddScoped<WindowsImageOcrTextExtractionService>();
+        services.AddScoped<IDocumentTextExtractionService, CompositeDocumentTextExtractionService>();
 
         var key = configuration["Jwt:Key"] ?? "development-super-secret-key-change-me";
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

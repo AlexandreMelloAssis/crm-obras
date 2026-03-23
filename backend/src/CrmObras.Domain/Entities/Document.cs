@@ -5,8 +5,8 @@ namespace CrmObras.Domain.Entities;
 
 public class Document : BaseEntity
 {
-    public Guid WorkProjectId { get; set; }
-    public WorkProject? WorkProject { get; set; }
+    public Guid WorkId { get; set; }
+    public Work? Work { get; set; }
     public Guid DocumentCategoryId { get; set; }
     public DocumentCategory? DocumentCategory { get; set; }
     public string FileName { get; set; } = string.Empty;
@@ -14,3 +14,4 @@ public class Document : BaseEntity
     public string StoragePath { get; set; } = string.Empty;
     public DocumentStatus Status { get; set; } = DocumentStatus.PendingReview;
 }
+

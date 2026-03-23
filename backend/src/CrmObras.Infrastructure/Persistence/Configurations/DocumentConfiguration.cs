@@ -11,7 +11,8 @@ public class DocumentConfiguration : IEntityTypeConfiguration<Document>
         builder.ToTable("documents");
         builder.Property(x => x.FileName).IsRequired().HasMaxLength(255);
         builder.Property(x => x.StoragePath).IsRequired().HasMaxLength(400);
-        builder.HasOne(x => x.WorkProject).WithMany().HasForeignKey(x => x.WorkProjectId);
+        builder.HasOne(x => x.Work).WithMany().HasForeignKey(x => x.WorkId);
         builder.HasOne(x => x.DocumentCategory).WithMany().HasForeignKey(x => x.DocumentCategoryId);
     }
 }
+

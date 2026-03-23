@@ -13,7 +13,7 @@ public class UploadDocumentCommandHandler(IApplicationDbContext dbContext, IFile
         var path = await storageService.SaveAsync(command.Stream, command.FileName, cancellationToken);
         var document = new Document
         {
-            WorkProjectId = command.WorkProjectId,
+            WorkId = command.WorkId,
             DocumentCategoryId = command.CategoryId,
             FileName = command.FileName,
             ContentType = command.ContentType,
@@ -25,3 +25,4 @@ public class UploadDocumentCommandHandler(IApplicationDbContext dbContext, IFile
         return document.Id;
     }
 }
+

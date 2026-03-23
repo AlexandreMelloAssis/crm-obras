@@ -25,16 +25,14 @@ public class AuthService(IApplicationDbContext dbContext, IJwtTokenGenerator tok
         if (await dbContext.Users.AnyAsync(x => x.Email == request.Email, cancellationToken))
             throw new InvalidOperationException("E-mail já cadastrado.");
 
-        var role = await dbContext.Roles.FirstOrDefaultAsync(r => r.Name == "Admin", cancellationToken)
-            ?? new Role { Name = "Admin" };
+        // Roles e associações iniciais serão criadas ou vinculadas no contexto de cada Obra (WorkUser)
 
         var user = new User
         {
             FullName = request.FullName,
             Email = request.Email,
             PasswordHash = passwordHasher.Hash(request.Password),
-            Profile = UserProfile.Admin,
-            Role = role
+            IsActive = true
         };
 
         dbContext.Users.Add(user);

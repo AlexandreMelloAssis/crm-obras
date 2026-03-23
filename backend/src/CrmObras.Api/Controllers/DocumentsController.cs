@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CrmObras.Application.Features.Documents.Commands.UploadDocument;
+using CrmObras.Application.Features.Documents.Queries.AnalyzeDocument;
+using CrmObras.Application.DTOs;
+using CrmObras.Application.Features.Documents.Queries.ListDocumentCategories;
 
 namespace CrmObras.Api.Controllers;
 
@@ -8,9 +11,20 @@ namespace CrmObras.Api.Controllers;
 [ApiVersion("1.0")]
 [Authorize]
 [Route("api/v{version:apiVersion}/documents")]
-public class DocumentsController(UploadDocumentCommandHandler uploadDocumentCommandHandler) : ControllerBase
+public class DocumentsController(
+    UploadDocumentCommandHandler uploadDocumentCommandHandler,
+    ListDocumentCategoriesQueryHandler listDocumentCategoriesQueryHandler,
+    AnalyzeDocumentQueryHandler analyzeDocumentQueryHandler) : ControllerBase
 {
-    public sealed record UploadDocumentRequest(Guid WorkProjectId, Guid CategoryId, IFormFile File);
+    public sealed record UploadDocumentRequest(Guid WorkId, Guid CategoryId, IFormFile File);
+
+    [HttpGet("categories")]
+    public Task<IReadOnlyList<DocumentCategoryDto>> ListCategories(CancellationToken cancellationToken) =>
+        listDocumentCategoriesQueryHandler.HandleAsync(new ListDocumentCategoriesQuery(), cancellationToken);
+
+    [HttpGet("{id:guid}/analysis")]
+    public Task<DocumentAnalysisDto> Analyze(Guid id, CancellationToken cancellationToken) =>
+        analyzeDocumentQueryHandler.HandleAsync(new AnalyzeDocumentQuery(id), cancellationToken);
 
     [HttpPost("upload")]
     [Consumes("multipart/form-data")]
@@ -20,7 +34,7 @@ public class DocumentsController(UploadDocumentCommandHandler uploadDocumentComm
         await using var stream = request.File.OpenReadStream();
         return await uploadDocumentCommandHandler.HandleAsync(
             new UploadDocumentCommand(
-                request.WorkProjectId,
+                request.WorkId,
                 request.CategoryId,
                 request.File.FileName,
                 request.File.ContentType,
@@ -28,3 +42,4 @@ public class DocumentsController(UploadDocumentCommandHandler uploadDocumentComm
             cancellationToken);
     }
 }
+

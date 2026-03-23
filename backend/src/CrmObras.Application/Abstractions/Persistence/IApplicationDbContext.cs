@@ -7,7 +7,10 @@ public interface IApplicationDbContext
 {
     DbSet<User> Users { get; }
     DbSet<Role> Roles { get; }
-    DbSet<WorkProject> WorkProjects { get; }
+    DbSet<Work> Works { get; }
+    DbSet<WorkUser> WorkUsers { get; }
+    DbSet<Permission> Permissions { get; }
+    DbSet<RolePermission> RolePermissions { get; }
     DbSet<WorkStage> WorkStages { get; }
     DbSet<Material> Materials { get; }
     DbSet<Expense> Expenses { get; }
@@ -15,5 +18,7 @@ public interface IApplicationDbContext
     DbSet<DocumentCategory> DocumentCategories { get; }
     DbSet<Budget> Budgets { get; }
     DbSet<CaixaFinancing> CaixaFinancings { get; }
+    DbSet<Supplier> Suppliers { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
+

@@ -4,7 +4,8 @@ public static class GetProjectCostSummaryQueryValidator
 {
     public static void Validate(GetProjectCostSummaryQuery query)
     {
-        if (query.WorkProjectId == Guid.Empty)
+        if (query.WorkId == Guid.Empty)
             throw new InvalidOperationException("Obra inválida para consolidação de custos.");
     }
 }
+
